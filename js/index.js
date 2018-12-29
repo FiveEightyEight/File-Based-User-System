@@ -121,7 +121,13 @@ app.get('/class/add/', (req, res) => {
             if (addStud) {
 
                 // data from loaded class
-                const newData = data;
+                // data
+                let newData = JSON.parse(JSON.stringify(data));
+
+                console.log(newData.students);
+                console.log(`Type of data.students: ${typeof data.students}`)
+                console.log(`add student?: ${addStud} /// newData: ${newData}`)
+                // console.log(Object.keys(newData));
 
                 // Adding a student to class
                 const newStudent = {
@@ -130,8 +136,12 @@ app.get('/class/add/', (req, res) => {
                     city,
                     grade,
                 };
+                // const arr = [...data['students']]
+                // console.log(`students array = ${newData['students']}`)
+                // console.log(`arr = ${arr}`);
+                newData.students = JSON.parse(JSON.stringify(stud.updateStudent(newStudent, newData.students)));
 
-                newData.students = stud.updateStudent(newStudent, newData.students);
+                console.log(`post updateStudent: ${newData.students}`)
 
                 stud.writeStudList({
                     name,

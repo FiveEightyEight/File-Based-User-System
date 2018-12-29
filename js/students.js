@@ -4,23 +4,73 @@ const FILE_NAME = 'students.json';
 
 const loadStudList = (cb) => {
     fs.readFile(`./students/${FILE_NAME}`, 'utf8', (err, data) => {
-        cb(err, JSON.parse(data));
+
+        // console.log(`Reading File... e: ${err} data: ${data}`)
+
+        if (err) {
+            buildFile((e, d) => {
+                fs.readFile(`./students/${FILE_NAME}`, 'utf8', (newErr, newData) => {
+                    cb(err, JSON.parse(newData));
+                });
+            });
+        } else {
+
+            // console.log(`No Error In Read... Returning Data`)
+
+            cb(err, JSON.parse(data));
+        };
     });
 };
 
 const writeStudList = (dataBlob, cb) => {
+    // console.log(`write ->`)
 
     if (valStudent(dataBlob)) {
-        dataBlob = JSON.stringify(dataBlob);
-        fs.writeFile(`./students/${FILE_NAME}`, dataBlob, (err, data) => {
-            cb(err, data);
+        // console.log(`write -> val ->`)
+
+        loadStudList((e, loadData) => {
+            // console.log(`write -> val -> load -> e: ${e} loadData: ${loadData}`)
+
+            if (e) {
+
+
+                // console.log(`write -> val -> load -> e -> e: ${e} loadData: ${loadData}`)
+
+                dataBlob = JSON.stringify([dataBlob]);
+                fs.writeFile(`./students/${FILE_NAME}`, dataBlob, (err, data) => {
+                    cb(err, data);
+                });
+
+            } else {
+
+                // console.log(`write -> val -> load -> NO E (else) -> e: ${e} loadData: ${loadData}`)
+
+                if (Object.keys(loadData).length === 0) {
+                    loadData = [];
+                }
+                loadData.push(dataBlob);
+                dataBlob = JSON.stringify(loadData);
+                fs.writeFile(`./students/${FILE_NAME}`, dataBlob, (err, data) => {
+                    cb(err, data);
+                });
+            }
+
         });
+
     } else {
 
         return {
             message: `Student info invalid.`,
         };
     };
+};
+
+const buildFile = (cb) => {
+    let dataBlob = [];
+    dataBlob = JSON.stringify(dataBlob);
+    fs.writeFile(`./students/${FILE_NAME}`, dataBlob, (err, data) => {
+        cb(err, data);
+    });
 };
 
 const searchStudent = (obj) => {
@@ -33,7 +83,7 @@ const searchStudent = (obj) => {
         } = obj;
         loadStudList(data => {
             // compare student data
-            data
+            // data
         });
     } else {
         return {
@@ -58,13 +108,23 @@ const valStudent = (obj) => {
 
 };
 
-const updateStudent = (student, arr) => {
+const updateStudent = (student, ukn) => {
+    let arr = JSON.parse(JSON.stringify(ukn));
+    student =  JSON.parse(JSON.stringify(student));
+
+
+    console.log(`is array? ${Array.isArray(arr)}`);
+    console.log(`
+    IN UPDATE STUDENT // arr: ${arr}
+    `)
+    
+
 
     if (Array.isArray(arr)) {
         let exists = false;
 
         for (let i = 0; i < arr.length; i++) {
-
+            console.log(`in updatestudent loop`)
             if (arr[i].name === student.name) {
                 arr[i] = student;
                 exists = true;
@@ -72,8 +132,10 @@ const updateStudent = (student, arr) => {
         };
 
         if (exists) {
+            console.log(`student: ${student} exists?: ${exists} arr: ${arr}`)
             return arr;
         } else {
+            console.log(`student: ${student} exists?: ${exists} arr: ${arr}`)
             return arr.push(student);
         };
     };
