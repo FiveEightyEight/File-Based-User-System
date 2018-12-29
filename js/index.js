@@ -6,12 +6,7 @@ const port = 3000;
 
 /*  // --- To Test --- //
 
-    Loading student data from class json works fine
-    updating student json not working
     
-    instead of adding a new student obj, the total number of students is passed in
-
-    problem may be the data being passed into student.js module updateStudent method or the method itself
     
 
 
@@ -47,7 +42,6 @@ app.get('/class/list', (req, res) => {
         });
     }
 });
-
 
 
 app.get('/class/add/', (req, res) => {
@@ -127,35 +121,17 @@ app.get('/class/add/', (req, res) => {
             if (addStud) {
 
                 // data from loaded class
-                // data
-                let newData = JSON.parse(JSON.stringify(data));
-                console.log('NEWWWW DATA', newData)
-                console.log(newData.students);
-                // console.log(`Type of data.students: ${typeof data.students}`)
-                // console.log(`add student?: ${addStud} /// newData: ${newData}`)
-                // console.log(Object.keys(newData));
 
-                // Adding a student to class
+                let newData = JSON.parse(JSON.stringify(data));
+      
                 const newStudent = {
                     name,
                     age,
                     city,
                     grade,
                 };
-                // const arr = [...data['students']]
-                // console.log(`students array = ${newData['students']}`)
-                // console.log(`arr = ${arr}`);
-                // newData.students = JSON.parse(JSON.stringify(stud.updateStudent(newStudent, newData.students)));
-                console.log("newStud:" , newStudent);
-                console.log("newD.stud:" , newData.students);
 
-                
-                // newData.students = stud.updateStudent(newStudent, newData.students);
                 newData.students = stud.updateStudent(newStudent, newData.students);
-
-
-                // console.log(`POST!!!  updateStudent: ${newData.students}`)
-                console.log("POST!!!  updateStudent:", newData.students)
 
                 stud.writeStudList({
                     name,

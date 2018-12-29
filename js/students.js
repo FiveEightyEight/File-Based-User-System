@@ -110,13 +110,11 @@ const valStudent = (obj) => {
 
 const updateStudent = (student, arr) => {
 
-
     if (Array.isArray(arr)) {
         let exists = false;
 
         for (let i = 0; i < arr.length; i++) {
-            // console.log(`in updatestudent loop`)
-            console.log('loop', arr[i])
+
             if (arr[i].name === student.name) {
                 arr[i] = student;
                 exists = true;
@@ -124,16 +122,12 @@ const updateStudent = (student, arr) => {
         };
 
         if (exists) {
-
-           console.log('EXISTS: ', arr)
             return arr;
         } else {
-
-             arr.push(student);
-             return arr;
+            arr.push(student);
+            return arr;
         };
     };
-    
 };
 
 
