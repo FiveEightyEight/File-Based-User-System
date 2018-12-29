@@ -16,10 +16,29 @@ const writeClass = (name, dataBlob = {students: []}, cb) => {
     });
 };
 
+const updateStudent = (student, arr) => {
+
+    let exists = false;
+
+    for (let i = 0; i < arr.length; i ++) {
+
+        if (arr[i].name === student.name) {
+            arr[i] = student;
+            exists = true;
+        };
+    };
+
+    if (exists) {
+    return arr;
+    } else {
+        return arr.push(student);
+    }
+};
 
 
 
 module.exports = {
     writeClass,
     loadClass,
+    updateStudent,
 };
