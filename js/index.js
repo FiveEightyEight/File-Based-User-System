@@ -195,12 +195,14 @@ app.get('/class/listfailing/', (req, res) => {
                 // class exist, filter through students for failing grade
 
                 const failingStudents = data.students.filter( e => {
-                    return e.grade < 50;
+
+                        return e.grade < 50;
                 });
+                
 
                 
 
-                if (failingStudents > 0) {
+                if (failingStudents.length > 0) {
                     res.json({
                         class: className,
                         students: failingStudents,
@@ -208,7 +210,7 @@ app.get('/class/listfailing/', (req, res) => {
                 } else {
 
                     // if no students were found
-                    
+
                     res.json({
                         message: `No failing students in ${className}`,
                     });
@@ -231,16 +233,54 @@ app.get('/class/listfailing/', (req, res) => {
 app.get('/class/listfromcity/', (req, res) => {
 
 
-    const className = req.query.class;
+const className = req.query.class;
+const {city} = req.query;
 
-    classes.loadClass(className, (err, data) => {
+    // check if user entered a class 
 
-    });
+    if (className && city) {
 
-    res.json({
-        message: 'in list from city',
-    });
+        classes.loadClass(className, (err, data) => {
 
+            if (err) {
+
+                // if class doesnt exist, return error
+
+                res.json({
+                    error: `Class ${className} doesn't exist.`
+                });
+            } else {
+
+                // class exist, filter through students who live in city
+
+                const cityStudents = data.students.filter( e => {
+                    return e.city === city;
+                });
+
+                
+
+                if (cityStudents.length > 0) {
+                    res.json({
+                        class: className,
+                        students: cityStudents,
+                    });
+                } else {
+
+                    // if no students were found
+                    
+                    res.json({
+                        message: `No students from ${city} in ${className}`,
+                    });
+                };
+            };
+        });
+
+
+    } else {
+        res.json({
+            error: `Enter a Class Name & City`
+        });
+    }
 });
 
 
