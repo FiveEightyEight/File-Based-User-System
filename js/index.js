@@ -212,6 +212,8 @@ app.get('/class/listfailing/', (req, res) => {
                     // if no students were found
 
                     res.json({
+                        class: className,
+                        students: failingStudents,
                         message: `No failing students in ${className}`,
                     });
                 };
@@ -247,6 +249,7 @@ const {city} = req.query;
                 // if class doesnt exist, return error
 
                 res.json({
+                    
                     error: `Class ${className} doesn't exist.`
                 });
             } else {
@@ -254,7 +257,7 @@ const {city} = req.query;
                 // class exist, filter through students who live in city
 
                 const cityStudents = data.students.filter( e => {
-                    return e.city === city;
+                    return e.city.toLowerCase() === city.toLowerCase();
                 });
 
                 
@@ -269,6 +272,8 @@ const {city} = req.query;
                     // if no students were found
                     
                     res.json({
+                        class: className,
+                        students: cityStudents,
                         message: `No students from ${city} in ${className}`,
                     });
                 };
