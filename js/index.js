@@ -45,7 +45,7 @@ app.get('/class/list', (req, res) => {
 
 
 app.get('/class/add/', (req, res) => {
-    
+
     const className = req.query.class;
     const {
         name,
@@ -123,7 +123,7 @@ app.get('/class/add/', (req, res) => {
                 // data from loaded class
 
                 let newData = JSON.parse(JSON.stringify(data));
-      
+
                 const newStudent = {
                     name,
                     age,
@@ -158,10 +158,10 @@ app.get('/class/add/', (req, res) => {
                             });
                         };
                     });
-    
+
                 });
 
-               
+
             } else {
 
                 // student info was not filled out completely
@@ -175,13 +175,57 @@ app.get('/class/add/', (req, res) => {
 
 app.get('/class/listfailing/', (req, res) => {
 
-    res.json({
-        message: 'in list failing',
-    });
+    const className = req.query.class;
+
+    // check if user entered a class 
+
+    if (className) {
+
+        classes.loadClass(className, (err, data) => {
+
+            if (err) {
+                res.json({
+                    error: `Class ${className} doesn't exist.`
+                });
+            } else {
+
+                const failingStudents = data.students.filter( e => {
+                    return e.grade < 50;
+                });
+
+                if (failingStudents > 0) {
+                    res.json({
+                        class: className,
+                        students: failingStudents,
+                    });
+                } else {
+                    res.json({
+                        message: `No failing students in ${className}`,
+                    });
+                };
+            };
+        });
+
+
+    } else {
+        res.json({
+            error: `Enter a Class Name`
+        });
+    }
+
+
+
 
 });
 
 app.get('/class/listfromcity/', (req, res) => {
+
+
+    const className = req.query.class;
+
+    classes.loadClass(className, (err, data) => {
+
+    });
 
     res.json({
         message: 'in list from city',
