@@ -139,7 +139,6 @@ app.get('/class/add/', (req, res) => {
                     city,
                     grade
                 }, cb => {
-                    //console.log('Wrote Student info');
 
                     classes.writeClass(className, newData, (err, data) => {
 
@@ -172,18 +171,21 @@ app.get('/class/add/', (req, res) => {
             };
         };
     });
+});
 
-    // classes.writeClass(`${className}`, (err, data) => {
+app.get('/class/listfailing/', (req, res) => {
 
-    //     if(err) {
-    //         console.log(`ERROR: ${err}`)
-    //     }
-    //     res.json({
-    //         message: `Complete`
-    //     })
-    //     // console.log(`Complete`)
-    // });
+    res.json({
+        message: 'in list failing',
+    });
 
+});
+
+app.get('/class/listfromcity/', (req, res) => {
+
+    res.json({
+        message: 'in list from city',
+    });
 
 });
 

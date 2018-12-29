@@ -5,8 +5,6 @@ const FILE_NAME = 'students.json';
 const loadStudList = (cb) => {
     fs.readFile(`./students/${FILE_NAME}`, 'utf8', (err, data) => {
 
-        // console.log(`Reading File... e: ${err} data: ${data}`)
-
         if (err) {
             buildFile((e, d) => {
                 fs.readFile(`./students/${FILE_NAME}`, 'utf8', (newErr, newData) => {
@@ -15,26 +13,17 @@ const loadStudList = (cb) => {
             });
         } else {
 
-            // console.log(`No Error In Read... Returning Data`)
-
             cb(err, JSON.parse(data));
         };
     });
 };
 
 const writeStudList = (dataBlob, cb) => {
-    // console.log(`write ->`)
 
     if (valStudent(dataBlob)) {
-        // console.log(`write -> val ->`)
-
         loadStudList((e, loadData) => {
-            // console.log(`write -> val -> load -> e: ${e} loadData: ${loadData}`)
 
             if (e) {
-
-
-                // console.log(`write -> val -> load -> e -> e: ${e} loadData: ${loadData}`)
 
                 dataBlob = JSON.stringify([dataBlob]);
                 fs.writeFile(`./students/${FILE_NAME}`, dataBlob, (err, data) => {
@@ -42,8 +31,6 @@ const writeStudList = (dataBlob, cb) => {
                 });
 
             } else {
-
-                // console.log(`write -> val -> load -> NO E (else) -> e: ${e} loadData: ${loadData}`)
 
                 if (Object.keys(loadData).length === 0) {
                     loadData = [];
