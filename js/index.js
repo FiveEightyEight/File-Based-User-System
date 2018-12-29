@@ -6,8 +6,14 @@ const port = 3000;
 
 /*  // --- To Test --- //
 
-    JSON parse for loads are now done in modules
-    Added function in student module that validates a student object 
+    Loading student data from class json works fine
+    updating student json not working
+    
+    instead of adding a new student obj, the total number of students is passed in
+
+    problem may be the data being passed into student.js module updateStudent method or the method itself
+    
+
 
 
 */
@@ -24,7 +30,7 @@ app.get('/class/list', (req, res) => {
     const className = req.query.class;
 
     if (className) {
-        console.log(`Class Name: ${className}`)
+
         classes.loadClass(className, (err, data) => {
 
             if (err) {
@@ -45,7 +51,7 @@ app.get('/class/list', (req, res) => {
 
 
 app.get('/class/add/', (req, res) => {
-
+    
     const className = req.query.class;
     const {
         name,
@@ -123,10 +129,10 @@ app.get('/class/add/', (req, res) => {
                 // data from loaded class
                 // data
                 let newData = JSON.parse(JSON.stringify(data));
-
+                console.log('NEWWWW DATA', newData)
                 console.log(newData.students);
-                console.log(`Type of data.students: ${typeof data.students}`)
-                console.log(`add student?: ${addStud} /// newData: ${newData}`)
+                // console.log(`Type of data.students: ${typeof data.students}`)
+                // console.log(`add student?: ${addStud} /// newData: ${newData}`)
                 // console.log(Object.keys(newData));
 
                 // Adding a student to class
@@ -139,9 +145,17 @@ app.get('/class/add/', (req, res) => {
                 // const arr = [...data['students']]
                 // console.log(`students array = ${newData['students']}`)
                 // console.log(`arr = ${arr}`);
-                newData.students = JSON.parse(JSON.stringify(stud.updateStudent(newStudent, newData.students)));
+                // newData.students = JSON.parse(JSON.stringify(stud.updateStudent(newStudent, newData.students)));
+                console.log("newStud:" , newStudent);
+                console.log("newD.stud:" , newData.students);
 
-                console.log(`post updateStudent: ${newData.students}`)
+                
+                // newData.students = stud.updateStudent(newStudent, newData.students);
+                newData.students = stud.updateStudent(newStudent, newData.students);
+
+
+                // console.log(`POST!!!  updateStudent: ${newData.students}`)
+                console.log("POST!!!  updateStudent:", newData.students)
 
                 stud.writeStudList({
                     name,
@@ -149,28 +163,30 @@ app.get('/class/add/', (req, res) => {
                     city,
                     grade
                 }, cb => {
-                    console.log('Wrote Student info');
+                    //console.log('Wrote Student info');
+
+                    classes.writeClass(className, newData, (err, data) => {
+
+                        if (err) {
+                            res.json({
+                                message: `Error adding ${name} to class ${className}`
+                            });
+                        } else {
+                            res.json({
+                                added: {
+                                    name,
+                                    age,
+                                    city,
+                                    grade
+                                },
+                                class: className,
+                            });
+                        };
+                    });
+    
                 });
 
-                classes.writeClass(className, newData, (err, data) => {
-
-                    if (err) {
-                        res.json({
-                            message: `Error adding ${name} to class ${className}`
-                        });
-                    } else {
-                        res.json({
-                            added: {
-                                name,
-                                age,
-                                city,
-                                grade
-                            },
-                            class: className,
-                        });
-                    };
-                });
-
+               
             } else {
 
                 // student info was not filled out completely

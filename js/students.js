@@ -108,23 +108,15 @@ const valStudent = (obj) => {
 
 };
 
-const updateStudent = (student, ukn) => {
-    let arr = JSON.parse(JSON.stringify(ukn));
-    student =  JSON.parse(JSON.stringify(student));
-
-
-    console.log(`is array? ${Array.isArray(arr)}`);
-    console.log(`
-    IN UPDATE STUDENT // arr: ${arr}
-    `)
-    
+const updateStudent = (student, arr) => {
 
 
     if (Array.isArray(arr)) {
         let exists = false;
 
         for (let i = 0; i < arr.length; i++) {
-            console.log(`in updatestudent loop`)
+            // console.log(`in updatestudent loop`)
+            console.log('loop', arr[i])
             if (arr[i].name === student.name) {
                 arr[i] = student;
                 exists = true;
@@ -132,13 +124,16 @@ const updateStudent = (student, ukn) => {
         };
 
         if (exists) {
-            console.log(`student: ${student} exists?: ${exists} arr: ${arr}`)
+
+           console.log('EXISTS: ', arr)
             return arr;
         } else {
-            console.log(`student: ${student} exists?: ${exists} arr: ${arr}`)
-            return arr.push(student);
+
+             arr.push(student);
+             return arr;
         };
     };
+    
 };
 
 
