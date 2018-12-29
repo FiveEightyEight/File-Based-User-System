@@ -25,10 +25,15 @@ const writeStudList = (dataBlob, cb) => {
 
 const searchStudent = (obj) => {
     if (valStudent(obj)) {
-        const { name, age, city, grade,} = obj;
+        const {
+            name,
+            age,
+            city,
+            grade,
+        } = obj;
         loadStudList(data => {
             // compare student data
-            // data
+            data
         });
     } else {
         return {
@@ -53,12 +58,34 @@ const valStudent = (obj) => {
 
 };
 
+const updateStudent = (student, arr) => {
+
+    if (Array.isArray(arr)) {
+        let exists = false;
+
+        for (let i = 0; i < arr.length; i++) {
+
+            if (arr[i].name === student.name) {
+                arr[i] = student;
+                exists = true;
+            };
+        };
+
+        if (exists) {
+            return arr;
+        } else {
+            return arr.push(student);
+        };
+    };
+};
+
 
 module.exports = {
 
     loadStudList,
     writeStudList,
     valStudent,
+    updateStudent,
 
 };
 

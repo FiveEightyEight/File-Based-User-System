@@ -124,7 +124,7 @@ app.get('/class/add/', (req, res) => {
                     grade,
                 };
 
-                newData.students = classes.updateStudent(newStudent, newData.students);
+                newData.students = stud.updateStudent(newStudent, newData.students);
 
                 stud.writeStudList({
                     name,
