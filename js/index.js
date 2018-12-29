@@ -184,14 +184,21 @@ app.get('/class/listfailing/', (req, res) => {
         classes.loadClass(className, (err, data) => {
 
             if (err) {
+
+                // if class doesnt exist, return error
+
                 res.json({
                     error: `Class ${className} doesn't exist.`
                 });
             } else {
 
+                // class exist, filter through students for failing grade
+
                 const failingStudents = data.students.filter( e => {
                     return e.grade < 50;
                 });
+
+                
 
                 if (failingStudents > 0) {
                     res.json({
@@ -199,6 +206,9 @@ app.get('/class/listfailing/', (req, res) => {
                         students: failingStudents,
                     });
                 } else {
+
+                    // if no students were found
+                    
                     res.json({
                         message: `No failing students in ${className}`,
                     });
