@@ -20,19 +20,26 @@ app.get('/', (req, res) => {
 
 app.get('/class/list', (req, res) => {
 
+
     const className = req.query.class;
 
-    classes.loadClass(className, (err, data) => {
+    if (className) {
+        console.log(`Class Name: ${className}`)
+        classes.loadClass(className, (err, data) => {
 
-        if (err) {
-            res.json({
-                error: `Class ${className} doesn't exist.`
-            });
-        } else {
-
-            res.json(data);
-        }
-    });
+            if (err) {
+                res.json({
+                    error: `Class ${className} doesn't exist.`
+                });
+            } else {
+                res.json(data);
+            }
+        });
+    } else {
+        res.json({
+            error: `Enter a Class Name`
+        });
+    }
 });
 
 
