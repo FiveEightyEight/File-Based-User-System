@@ -9,12 +9,14 @@ const loadStudList = (cb) => {
 };
 
 const writeStudList = (dataBlob, cb) => {
+
     if (valStudent(dataBlob)) {
         dataBlob = JSON.stringify(dataBlob);
         fs.writeFile(`./students/${FILE_NAME}`, dataBlob, (err, data) => {
             cb(err, data);
         });
     } else {
+
         return {
             message: `Student info invalid.`,
         };

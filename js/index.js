@@ -89,6 +89,9 @@ app.get('/class/add/', (req, res) => {
             if(addStud) {
             // Adding a student to class
             const newData = data;
+            stud.writeStudList({name, age, city, grade}, cb => {
+                console.log('Wrote Student info');
+            });
 
             newData.students.push({name, age, city, grade});
 
