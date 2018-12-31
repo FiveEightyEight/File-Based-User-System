@@ -102,7 +102,7 @@ const updateStudent = (student, arr) => {
 
         for (let i = 0; i < arr.length; i++) {
 
-            if (arr[i].name === student.name) {
+            if (arr[i].name.toLowerCase() === student.name.toLowerCase()) {
                 arr[i] = student;
                 exists = true;
             };
